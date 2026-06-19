@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pacific DevOps Music Fest</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1 id="festival-name">Cargando evento...</h1>
+        <p id="festival-date" class="date"></p>
+    </header>
+    <main>
+        <h2>Lineup de Artistas</h2>
+        <ul id="artist-list">
+            <li>Cargando artistas...</li>
+        </ul>
+        <button class="buy-btn" onclick="alert('¡Redirigiendo a la pasarela de pagos segura!')">Comprar Tickets</button>
+    </main>
+    <script>
+        // Petición al Backend
+        fetch('http://localhost:5000/api/info')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('festival-name').innerText = data.festival;
+                document.getElementById('festival-date').innerText = "Fecha: " + data.fecha;
+                
+                const list = document.getElementById('artist-list');
+                list.innerHTML = '';
+                data.artistas.forEach(artista => {
+                    let li = document.createElement('li');
+                    li.innerText = artista;
+                    list.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
